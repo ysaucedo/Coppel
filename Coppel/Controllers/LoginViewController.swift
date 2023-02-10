@@ -16,11 +16,11 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        hideKeyboardWhenTappedAround()
         login.loginProtocol = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        login.userNameTxt.becomeFirstResponder()
         login.userNameTxt.text = Constant.emptyString
         login.passwordTxt.text = Constant.emptyString
         navigationController?.setNavigationBarHidden(true, animated: false)
@@ -59,5 +59,17 @@ extension LoginViewController: LoginProtocol {
                 self.login.setErrorLabel(error: error.domain)
             }
         })
+    }
+}
+
+extension LoginViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action:    #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
